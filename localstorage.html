@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+   <p><input type="text" placeholder="Enter your name" id="someName"></p> 
+    <p><input type="password" placeholder="Enter your password" id="pwd"></p>
+    <p><button onclick="saveInfo()">Submit</button><span id="errorM"></span>
+        <div id="disp"></p>
+     <table id="dispList" border="1">
+         <tr>
+             <td>Name</td>
+             <td>Password</td>
+         </tr>
+        
+     </table>
+     <p>Number of Visitors <span id="counts"></span></p>
+    </div>
+
+<script>
+    var masterList =[];
+  addEventListener('load', init);
+  function init(){
+      masterList = JSON.parse(localStorage.getItem('master'));
+      if(masterList !==null)
+      {
+        masterList.forEach(function(value){ 
+        tableEntry(value);
+      })
+      }
+      else
+      {
+          masterList =[];
+      }
+     
+      counter();
+      console.log(localStorage);
+      
+        }
+      function counter(){
+       
+          var number = localStorage.getItem('on_load_counter');
+          if(number==null){
+              number=0;
+          }
+          number++;
+          
+          localStorage.setItem('on_load_counter', number);
+          //var nums = number.toString().split('').map(Number);
+          document.getElementById('counts').innerHTML=number;
+        //   for(var i of nums){
+        //   document.getElementById('counts').innerHTML += i;
+
+        //   }
+      }  
+     function tableEntry(value){
+        var row = document.createElement('tr');
+      var col1 = document.createElement('td');
+      var col2 = document.createElement('td');
+      var table = document.getElementById('dispList');
+      col1.appendChild(document.createTextNode(value.name));
+      col2.appendChild(document.createTextNode(value.pwd));      
+      row.appendChild(col1);
+      row.appendChild(col2);
+      table.appendChild(row);
+     }   
+
+   function saveInfo(){
+       var name=document.getElementById("someName").value; 
+       var pwd=document.getElementById("pwd").value;
+       if (name =='' || pwd=='') {
+      document.getElementById('errorM').innerText = 'Please Enter Details';
+      
+        }
+       else if(name =='') {
+      document.getElementById('errorM').innerText = 'Please Enter Details';
+       }
+       else if(pwd==''){
+      document.getElementById('errorM').innerText = 'Please Enter Details';
+       }
+
+       else{
+        var detailObj= {
+           name:name,
+           pwd: pwd
+        }
+   
+        tableEntry(detailObj);
+        masterList.push(detailObj);
+        localStorage.setItem("master", JSON.stringify(masterList));
+        var getMaster = localStorage.getItem("master");
+       }
+                   
+         }
+
+      
+
+       
+
+</script>
+</body>
+</html>
